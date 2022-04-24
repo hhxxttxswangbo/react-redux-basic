@@ -8,6 +8,14 @@ export const INCREMENT = 'increment'
 action中：
 export const createIncreaseAction = (data) => ({ type: INCREMENT, data: data })
 export const createDecreaseAction = (data) => ({ type: DECREMENT, data: data })
+//异步action action的值为函数  接收两个参数
+export const createIncrementAsyncAction = (data, time) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(createIncreaseAction(data))
+    }, time)
+  }
+}
 
 reducers中：     用来初始化状态和加工
 import { INCREMENT, DECREMENT } from '../constant';
@@ -25,12 +33,16 @@ export default function countReducer(preState = initState, action) {
 }
 
 store.js中
+//从redux-thunk引入thunk，用于支持异步action  同时要从react中引入applyMiddleware
+import thunk from "redux-thunk"
+
 const allReducer = combineReducers(
   {
     he: CountReducer,
     rens: PersonReducer
   }
 )
+
 
 组件中
 export default connect(

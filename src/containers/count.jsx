@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 //从react-redux中导出connect(加花括号)，用来连接容器组件和UI组件
 import { connect } from 'react-redux'
 //引入action 不是默认导出用大括号
-import { createIncreaseAction, createDecreaseAction } from '../redux/actions/count'
+import { createIncreaseAction, createDecreaseAction, createIncrementAsyncAction } from '../redux/actions/count'
 
 //UI组件
 class Count extends Component {
@@ -13,6 +13,12 @@ class Count extends Component {
   decreaseButton = () => {
     const { value } = this.selectNumber
     this.props.jian(value * 1)
+  }
+
+  increaseAsyncButton = () => {
+    const { value } = this.selectNumber;
+    // 传两个参数  第一个为action里的data 第二个为time
+    this.props.jiaAsync(value * 1, 500)
   }
 
   render() {
@@ -32,6 +38,7 @@ class Count extends Component {
         </select>&nbsp;
         <button onClick={this.increaseButton}>点我加</button>&nbsp;
         <button onClick={this.decreaseButton}>点我减</button>&nbsp;
+        <button onClick={this.increaseAsyncButton}>异步加</button>
       </div>
     )
   }
@@ -45,6 +52,7 @@ export default connect(
   }),
   {
     jia: createIncreaseAction,  //映射状态的方法  createIncreaseAction为actions里定义的createIncreaseAction
+    jiaAsync: createIncrementAsyncAction,
     jian: createDecreaseAction
   }
 )(Count)
